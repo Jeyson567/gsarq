@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Árbol de Amor Animado</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+  body {
+    background: #F5E8DC;
+    font-family: 'Pacifico', cursive, Arial, sans-serif;
+    margin: 0; padding: 0;
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    color: #5C4033;
+    overflow-x: hidden;
+    position: relative;
+  }
+  #tree {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    margin-bottom: 20px;
+    z-index: 10;
+  }
+  #tree::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 25px;
+    height: 100px;
+    background: #3E7C3A;
+    border-radius: 10px;
+    transform: translateX(-50%);
+    z-index: 5;
+  }
+  .heart {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #E63946;
+    clip-path: polygon(
+      50% 0%,
+      61% 11%,
+      68% 20%,
+      75% 29%,
+      85% 44%,
+      90% 53%,
+      90% 62%,
+      90% 68%,
+      70% 100%,
+      50% 85%,
+      30% 100%,
+      10% 68%,
+      10% 62%,
+      10% 53%,
+      15% 44%,
+      25% 29%,
+      32% 20%,
+      39% 11%
+    );
+    opacity: 0;
+    transform: translateY(50px) scale(0.5);
+    animation-fill-mode: forwards;
+  }
+  @keyframes riseUp {
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  #message, #counter, #title {
+    max-width: 340px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation-fill-mode: forwards;
+  }
+  #title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  #message {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  #counter {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  /* Corazones cayendo */
+  .falling-heart {
+    position: fixed;
+    width: 18px;
+    height: 18px;
+    background: #E63946;
+    clip-path: polygon(
+      50% 0%,
+      61% 11%,
+      68% 20%,
+      75% 29%,
+      85% 44%,
+      90% 53%,
+      90% 62%,
+      90% 68%,
+      70% 100%,
+      50% 85%,
+      30% 100%,
+      10% 68%,
+      10% 62%,
+      10% 53%,
+      15% 44%,
+      25% 29%,
+      32% 20%,
+      39% 11%
+    );
+    opacity: 0.8;
+    animation: fall 6s linear infinite;
+    z-index: 20;
+  }
+  /* Letras cayendo */
+  .falling-letter {
+    position: fixed;
+    font-family: 'Pacifico', cursive;
+    font-weight: bold;
+    font-size: 28px;
+    color: #1D3557;
+    opacity: 0.85;
+    animation: fall 7s linear infinite;
+    z-index: 25;
+    user-select: none;
+  }
+  @keyframes fall {
+    0% {
+      transform: translateY(-30px) translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(110vh) translateX(50px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="tree"></div>
+
+<div id="title">Para el amor de mi vida</div>
+<div id="message">Si pudiera elegir un lugar seguro, sería a tu lado.</div>
+<div id="counter">Nuestro amor hizo clic hace... <br/><span id="time"></span></div>
+
+<script>
+  const tree = document.getElementById('tree');
+  const heartsCount = 100; // más corazones para rellenar
+
+  function heartPos(t) {
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+    return {x, y};
+  }
+  const scaleX = 8;
+  const scaleY = -8;
+  const centerX = 170;
+  const centerY = 150;
+
+  for(let i = 0; i < heartsCount; i++) {
+    const t = Math.random() * 2 * Math.PI;
+    const pos = heartPos(t);
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = (centerX + pos.x * scaleX + (Math.random() * 10 - 5)) + 'px';
+    heart.style.top = (centerY + pos.y * scaleY + (Math.random() * 10 - 5)) + 'px';
+    const delay = ((centerY + pos.y * scaleY + 40) / 350) * 4; // 0 a 4 segundos
+    heart.style.animation = `riseUp 0.7s ease forwards`;
+    heart.style.animationDelay = delay + 's';
+    tree.appendChild(heart);
+  }
+
+  // Animar texto y contador después
+  const title = document.getElementById('title');
+  const message = document.getElementById('message');
+  const counter = document.getElementById('counter');
+
+  setTimeout(() => { title.style.animation = 'riseUp 0.8s ease forwards'; }, 4200);
+  setTimeout(() => { message.style.animation = 'riseUp 0.8s ease forwards'; }, 5200);
+  setTimeout(() => { counter.style.animation = 'riseUp 0.8s ease forwards'; }, 6200);
+
+  // Contador desde fecha exacta
+  const startDate = new Date('2022-07-31T23:58:00');
+
+  function updateTime() {
+    const now = new Date();
+    let diff = now - startDate;
+
+    const days = Math.floor(diff / (1000*60*60*24));
+    diff -= days * (1000*60*60*24);
+    const hours = Math.floor(diff / (1000*60*60));
+    diff -= hours * (1000*60*60);
+    const minutes = Math.floor(diff / (1000*60));
+    diff -= minutes * (1000*60);
+    const seconds = Math.floor(diff / 1000);
+
+    document.getElementById('time').textContent = 
+      `${days} días ${hours} horas ${minutes} minutos ${seconds} segundos`;
+  }
+
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  // Crear corazones cayendo
+  function createFallingHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('falling-heart');
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.animationDuration = (4 + Math.random() * 3) + 's';
+    heart.style.animationDelay = '0s';
+    document.body.appendChild(heart);
+    setTimeout(() => {
+      heart.remove();
+    }, 7000);
+  }
+
+  setInterval(createFallingHeart, 500);
+
+  // Crear letras cayendo J y B
+  function createFallingLetter(letter) {
+    const span = document.createElement('span');
+    span.classList.add('falling-letter');
+    span.textContent = letter;
+    span.style.left = Math.random() * window.innerWidth + 'px';
+    span.style.animationDuration = (5 + Math.random() * 4) + 's';
+    document.body.appendChild(span);
+    setTimeout(() => {
+      span.remove();
+    }, 9000);
+  }
+
+  setInterval(() => createFallingLetter('J'), 3000);
+  setInterval(() => createFallingLetter('B'), 3500);
+
+</script>
+
+</body>
+</html>
