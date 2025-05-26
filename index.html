@@ -3,245 +3,535 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Árbol de Amor Animado</title>
+<title>GS Arquitectura - Elegante y Animado</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+  /* Colores */
+  :root {
+    --gris-claro: #f2f2f2;
+    --gris-medio: #555555;
+    --gris-oscuro: #222222;
+    --amarillo: #f2c94c;
+    --blanco: #ffffff;
+    --negro: #000000;
+  }
+
+  /* Reset básico */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
   body {
-    background: #F5E8DC;
-    font-family: 'Pacifico', cursive, Arial, sans-serif;
-    margin: 0; padding: 0;
-    display: flex; justify-content: center; align-items: center;
-    height: 100vh;
-    flex-direction: column;
-    color: #5C4033;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--gris-medio);
+    background: var(--gris-claro);
     overflow-x: hidden;
-    position: relative;
   }
-  #tree {
-    position: relative;
-    width: 340px;
-    height: 340px;
-    margin-bottom: 20px;
-    z-index: 10;
+  header {
+    background: var(--gris-oscuro);
+    color: var(--blanco);
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    transition: background 0.4s ease;
   }
-  #tree::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 25px;
-    height: 100px;
-    background: #3E7C3A;
-    border-radius: 10px;
-    transform: translateX(-50%);
-    z-index: 5;
+  nav.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  .heart {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    background: #E63946;
-    clip-path: polygon(
-      50% 0%,
-      61% 11%,
-      68% 20%,
-      75% 29%,
-      85% 44%,
-      90% 53%,
-      90% 62%,
-      90% 68%,
-      70% 100%,
-      50% 85%,
-      30% 100%,
-      10% 68%,
-      10% 62%,
-      10% 53%,
-      15% 44%,
-      25% 29%,
-      32% 20%,
-      39% 11%
-    );
-    opacity: 0;
-    transform: translateY(50px) scale(0.5);
-    animation-fill-mode: forwards;
+  nav.menu .logo {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--amarillo);
+    user-select: none;
+    cursor: default;
   }
-  @keyframes riseUp {
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+  nav.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
   }
-  #message, #counter, #title {
-    max-width: 340px;
-    text-align: center;
+  nav.menu ul li a {
+    color: var(--blanco);
+    text-decoration: none;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  nav.menu ul li a:hover,
+  nav.menu ul li a.active {
+    background-color: var(--amarillo);
+    color: var(--gris-oscuro);
+  }
+
+  main {
+    padding: 120px 30px 50px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  section {
+    display: none;
     opacity: 0;
     transform: translateY(20px);
-    animation-fill-mode: forwards;
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
-  #title {
-    font-size: 28px;
-    font-weight: bold;
+  section.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hero */
+  #inicio .hero {
+    background: url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--blanco);
+    text-shadow: 3px 3px 8px rgba(0,0,0,0.9);
+    padding: 0 30px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  }
+  #inicio .hero h1 {
+    font-size: 3.5rem;
     margin-bottom: 15px;
+    font-weight: 900;
   }
-  #message {
-    font-size: 20px;
-    margin-bottom: 15px;
+  #inicio .hero p {
+    font-size: 1.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
   }
-  #counter {
-    font-size: 22px;
-    font-weight: 700;
+  #inicio .about {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--gris-medio);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  /* Corazones cayendo */
-  .falling-heart {
-    position: fixed;
-    width: 18px;
-    height: 18px;
-    background: #E63946;
-    clip-path: polygon(
-      50% 0%,
-      61% 11%,
-      68% 20%,
-      75% 29%,
-      85% 44%,
-      90% 53%,
-      90% 62%,
-      90% 68%,
-      70% 100%,
-      50% 85%,
-      30% 100%,
-      10% 68%,
-      10% 62%,
-      10% 53%,
-      15% 44%,
-      25% 29%,
-      32% 20%,
-      39% 11%
-    );
-    opacity: 0.8;
-    animation: fall 6s linear infinite;
-    z-index: 20;
+
+  /* Proyectos */
+  #proyectos h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--gris-oscuro);
+    font-weight: 800;
+    letter-spacing: 2px;
   }
-  /* Letras cayendo */
-  .falling-letter {
-    position: fixed;
-    font-family: 'Pacifico', cursive;
-    font-weight: bold;
-    font-size: 28px;
-    color: #1D3557;
-    opacity: 0.85;
-    animation: fall 7s linear infinite;
-    z-index: 25;
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+  }
+  .card {
+    position: relative;
+    width: 320px;
+    background: var(--blanco);
+    border-radius: 14px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(.25,.8,.25,1), box-shadow 0.35s ease;
+  }
+  .card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+  }
+  .card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    display: block;
     user-select: none;
+    border-bottom: 4px solid var(--amarillo);
+    transition: filter 0.3s ease;
   }
-  @keyframes fall {
+  .card:hover img {
+    filter: brightness(0.85);
+  }
+  /* Marca de agua */
+  .watermark {
+    pointer-events: none;
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-size: 14px;
+    font-weight: 900;
+    color: rgba(242,201,76,0.6);
+    text-shadow: 1px 1px 3px var(--gris-oscuro);
+    user-select: none;
+    letter-spacing: 1px;
+  }
+  .card-content {
+    padding: 20px 22px;
+  }
+  .card-content h3 {
+    margin-bottom: 10px;
+    color: var(--gris-oscuro);
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .card-content p {
+    font-size: 1rem;
+    color: var(--gris-medio);
+    line-height: 1.5;
+  }
+
+  /* Detalle proyecto */
+  #detalle-proyecto {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #detalle-proyecto img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    user-select: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+  }
+  #detalle-proyecto img:hover {
+    transform: scale(1.03);
+  }
+  #detalle-proyecto h1 {
+    margin-bottom: 20px;
+    color: var(--gris-oscuro);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+  }
+  #detalle-proyecto p {
+    font-size: 1.1rem;
+    color: var(--gris-medio);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto 40px;
+  }
+  #detalle-proyecto button {
+    background-color: var(--amarillo);
+    color: var(--gris-oscuro);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 5px 12px rgba(242,201,76,0.6);
+  }
+  #detalle-proyecto button:hover {
+    background-color: #d1aa26;
+    box-shadow: 0 7px 18px rgba(209,170,38,0.8);
+  }
+
+  /* Servicios */
+  #servicios h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--gris-oscuro);
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  #servicios ul {
+    max-width: 600px;
+    margin: 0 auto;
+    list-style: none;
+    padding-left: 0;
+  }
+  #servicios ul li {
+    background: var(--amarillo);
+    color: var(--gris-oscuro);
+    padding: 16px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    box-shadow: 0 4px 10px rgba(242,201,76,0.5);
+    transition: background-color 0.3s ease;
+  }
+  #servicios ul li:hover {
+    background: #d1aa26;
+    box-shadow: 0 6px 14px rgba(209,170,38,0.8);
+  }
+
+  /* Contacto */
+  #contacto h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--gris-oscuro);
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  #contacto form {
+    max-width: 520px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  #contacto input, #contacto textarea {
+    padding: 14px 18px;
+    border: 2px solid var(--gris-medio);
+    border-radius: 8px;
+    font-size: 1.05rem;
+    transition: border-color 0.3s ease;
+  }
+  #contacto input:focus, #contacto textarea:focus {
+    outline: none;
+    border-color: var(--amarillo);
+    box-shadow: 0 0 10px rgba(242,201,76,0.6);
+  }
+  #contacto button {
+    padding: 14px 28px;
+    background: var(--amarillo);
+    border: none;
+    border-radius: 8px;
+    color: var(--gris-oscuro);
+    font-weight: 900;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 15px rgba(242,201,76,0.7);
+  }
+  #contacto button:hover {
+    background: #d1aa26;
+    box-shadow: 0 8px 22px rgba(209,170,38,0.9);
+  }
+
+  footer {
+    background: var(--gris-oscuro);
+    color: var(--blanco);
+    text-align: center;
+    padding: 24px 20px;
+    margin-top: 60px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    box-shadow: inset 0 1px 3px rgba(255,255,255,0.15);
+  }
+
+  /* Aviso legal */
+  #legal {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: var(--gris-medio);
+    text-align: center;
+  }
+
+  /* Animaciones */
+
+  /* Fade-in para secciones */
+  section.active {
+    animation: fadeInUp 0.6s ease forwards;
+  }
+
+  @keyframes fadeInUp {
     0% {
-      transform: translateY(-30px) translateX(0) rotate(0deg);
-      opacity: 1;
+      opacity: 0;
+      transform: translateY(20px);
     }
     100% {
-      transform: translateY(110vh) translateX(50px) rotate(360deg);
-      opacity: 0;
+      opacity: 1;
+      transform: translateY(0);
     }
+  }
+
+  /* Transición suave para links menú */
+  nav.menu ul li a {
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 </style>
 </head>
 <body>
 
-<div id="tree"></div>
+<header>
+  <nav class="menu">
+    <div class="logo">GS Arquitectura</div>
+    <ul>
+      <li><a class="active" onclick="mostrarSeccion('inicio')">Inicio</a></li>
+      <li><a onclick="mostrarSeccion('quienes')">Quiénes Somos</a></li>
+      <li><a onclick="mostrarSeccion('proyectos')">Proyectos</a></li>
+      <li><a onclick="mostrarSeccion('servicios')">Servicios</a></li>
+      <li><a onclick="mostrarSeccion('contacto')">Contacto</a></li>
+    </ul>
+  </nav>
+</header>
 
-<div id="title">Para el amor de mi vida</div>
-<div id="message">Si pudiera elegir un lugar seguro, sería a tu lado.</div>
-<div id="counter">Nuestro amor hizo clic hace... <br/><span id="time"></span></div>
+<main>
+  <!-- Inicio -->
+  <section id="inicio" class="active">
+    <div class="hero">
+      <h1>Diseñamos tu futuro</h1>
+      <p>Arquitectura sostenible y funcional para espacios únicos.</p>
+    </div>
+    <div class="about">
+      <h2>Bienvenido a GS Arquitectura</h2>
+      <p>Desde 2005, GS Arquitectura se ha comprometido con la creación de espacios que inspiran, combinando innovación, funcionalidad y sostenibilidad en cada proyecto.</p>
+    </div>
+  </section>
+
+  <!-- Quiénes Somos -->
+  <section id="quienes">
+    <h2>Quiénes Somos</h2>
+    <p>GS Arquitectura fue fundada por los hermanos Gabriela y Santiago López, dos arquitectos apasionados por el diseño eficiente y la integración con el entorno.</p>
+    <ul>
+      <li><strong>Gabriela López:</strong> Especialista en diseño sostenible y eficiencia energética.</li>
+      <li><strong>Santiago López:</strong> Experto en planificación urbana y diseño conceptual.</li>
+      <li><strong>Equipo GS:</strong> Un grupo multidisciplinario dedicado a transformar ideas en realidad.</li>
+    </ul>
+  </section>
+
+  <!-- Proyectos -->
+  <section id="proyectos">
+    <h2>Proyectos Destacados</h2>
+    <div class="cards-container" id="proyectos-container">
+      <div class="card" oncontextmenu="return false;" onclick="mostrarDetalleProyecto('Residencia Aurora', 'https://images.unsplash.com/photo-1600585154350-6c383f364f35?auto=format&fit=crop&w=800&q=80', 'Residencia Aurora es un proyecto residencial que integra tecnología inteligente, materiales sostenibles y espacios abiertos que fomentan la convivencia familiar en un entorno natural.')">
+        <img src="https://images.unsplash.com/photo-1600585154350-6c383f364f35?auto=format&fit=crop&w=800&q=80" alt="Residencia Aurora" />
+        <div class="watermark">GS Arquitectura</div>
+        <div class="card-content">
+          <h3>Residencia Aurora</h3>
+          <p>Casa inteligente con integración sostenible y diseño contemporáneo.</p>
+        </div>
+      </div>
+
+      <div class="card" oncontextmenu="return false;" onclick="mostrarDetalleProyecto('Torre Prisma', 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80', 'Torre Prisma es un edificio de oficinas con certificación LEED, que incorpora sistemas de ventilación natural y espacios colaborativos diseñados para maximizar productividad y bienestar.')">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Torre Prisma" />
+        <div class="watermark">GS Arquitectura</div>
+        <div class="card-content">
+          <h3>Torre Prisma</h3>
+          <p>Edificio corporativo verde con tecnología de punta y espacios abiertos.</p>
+        </div>
+      </div>
+
+      <div class="card" oncontextmenu="return false;" onclick="mostrarDetalleProyecto('Parque Solar', 'https://images.unsplash.com/photo-1494522358652-2aa0c7f51f7e?auto=format&fit=crop&w=800&q=80', 'El Parque Solar es un espacio público diseñado para fomentar actividades al aire libre, con áreas verdes, circuitos deportivos y paneles solares que alimentan toda la iluminación del parque.')">
+        <img src="https://images.unsplash.com/photo-1494522358652-2aa0c7f51f7e?auto=format&fit=crop&w=800&q=80" alt="Parque Solar" />
+        <div class="watermark">GS Arquitectura</div>
+        <div class="card-content">
+          <h3>Parque Solar</h3>
+          <p>Espacio público ecoamigable con energías renovables y áreas recreativas.</p>
+        </div>
+      </div>
+
+      <div class="card" oncontextmenu="return false;" onclick="mostrarDetalleProyecto('Centro Cultural Raíces', 'https://images.unsplash.com/photo-1504457040599-b13d52a6440f?auto=format&fit=crop&w=800&q=80', 'Centro Cultural Raíces celebra la herencia y el arte local con espacios abiertos para exposiciones, talleres y eventos comunitarios, promoviendo la cultura sostenible.')">
+        <img src="https://images.unsplash.com/photo-1504457040599-b13d52a6440f?auto=format&fit=crop&w=800&q=80" alt="Centro Cultural Raíces" />
+        <div class="watermark">GS Arquitectura</div>
+        <div class="card-content">
+          <h3>Centro Cultural Raíces</h3>
+          <p>Espacio para la cultura y arte con diseño sostenible y comunitario.</p>
+        </div>
+      </div>
+    </div>
+    <div id="legal">
+      <p>© 2025 GS Arquitectura. Todos los derechos reservados. Queda prohibida la reproducción o uso no autorizado de las imágenes y diseños aquí presentados.</p>
+    </div>
+  </section>
+
+  <!-- Detalle proyecto -->
+  <section id="detalle-proyecto">
+    <button onclick="cerrarDetalle()">Volver a Proyectos</button>
+    <h1 id="titulo-proyecto"></h1>
+    <img id="imagen-proyecto" src="" alt="" />
+    <p id="descripcion-proyecto"></p>
+  </section>
+
+  <!-- Servicios -->
+  <section id="servicios">
+    <h2>Servicios</h2>
+    <ul>
+      <li>Diseño arquitectónico personalizado</li>
+      <li>Planificación urbana y paisajismo</li>
+      <li>Consultoría en sostenibilidad</li>
+      <li>Supervisión y gestión de obras</li>
+      <li>Proyectos residenciales, comerciales e institucionales</li>
+    </ul>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto">
+    <h2>Contacto</h2>
+    <form onsubmit="return enviarFormulario(event)">
+      <input type="text" id="nombre" placeholder="Tu nombre" required />
+      <input type="email" id="email" placeholder="Tu correo electrónico" required />
+      <textarea id="mensaje" rows="5" placeholder="Tu mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 GS Arquitectura - Todos los derechos reservados.</p>
+</footer>
 
 <script>
-  const tree = document.getElementById('tree');
-  const heartsCount = 100; // más corazones para rellenar
-
-  function heartPos(t) {
-    const x = 16 * Math.pow(Math.sin(t), 3);
-    const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-    return {x, y};
-  }
-  const scaleX = 8;
-  const scaleY = -8;
-  const centerX = 170;
-  const centerY = 150;
-
-  for(let i = 0; i < heartsCount; i++) {
-    const t = Math.random() * 2 * Math.PI;
-    const pos = heartPos(t);
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.style.left = (centerX + pos.x * scaleX + (Math.random() * 10 - 5)) + 'px';
-    heart.style.top = (centerY + pos.y * scaleY + (Math.random() * 10 - 5)) + 'px';
-    const delay = ((centerY + pos.y * scaleY + 40) / 350) * 4; // 0 a 4 segundos
-    heart.style.animation = `riseUp 0.7s ease forwards`;
-    heart.style.animationDelay = delay + 's';
-    tree.appendChild(heart);
+  function mostrarSeccion(id) {
+    document.querySelectorAll('main > section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById('detalle-proyecto').classList.remove('active');
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('nav.menu ul li a').forEach(a => a.classList.remove('active'));
+    document.querySelectorAll('nav.menu ul li a').forEach(a => {
+      if (a.getAttribute('onclick') === `mostrarSeccion('${id}')`) {
+        a.classList.add('active');
+      }
+    });
   }
 
-  // Animar texto y contador después
-  const title = document.getElementById('title');
-  const message = document.getElementById('message');
-  const counter = document.getElementById('counter');
-
-  setTimeout(() => { title.style.animation = 'riseUp 0.8s ease forwards'; }, 4200);
-  setTimeout(() => { message.style.animation = 'riseUp 0.8s ease forwards'; }, 5200);
-  setTimeout(() => { counter.style.animation = 'riseUp 0.8s ease forwards'; }, 6200);
-
-  // Contador desde fecha exacta
-  const startDate = new Date('2022-07-31T23:58:00');
-
-  function updateTime() {
-    const now = new Date();
-    let diff = now - startDate;
-
-    const days = Math.floor(diff / (1000*60*60*24));
-    diff -= days * (1000*60*60*24);
-    const hours = Math.floor(diff / (1000*60*60));
-    diff -= hours * (1000*60*60);
-    const minutes = Math.floor(diff / (1000*60));
-    diff -= minutes * (1000*60);
-    const seconds = Math.floor(diff / 1000);
-
-    document.getElementById('time').textContent = 
-      `${days} días ${hours} horas ${minutes} minutos ${seconds} segundos`;
+  function mostrarDetalleProyecto(titulo, imagen, descripcion) {
+    document.querySelectorAll('main > section').forEach(sec => sec.classList.remove('active'));
+    const detalle = document.getElementById('detalle-proyecto');
+    detalle.classList.add('active');
+    document.getElementById('titulo-proyecto').textContent = titulo;
+    const img = document.getElementById('imagen-proyecto');
+    img.src = imagen;
+    img.alt = titulo;
+    document.getElementById('descripcion-proyecto').textContent = descripcion;
+    document.querySelectorAll('nav.menu ul li a').forEach(a => a.classList.remove('active'));
   }
 
-  setInterval(updateTime, 1000);
-  updateTime();
-
-  // Crear corazones cayendo
-  function createFallingHeart() {
-    const heart = document.createElement('div');
-    heart.classList.add('falling-heart');
-    heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.style.animationDuration = (4 + Math.random() * 3) + 's';
-    heart.style.animationDelay = '0s';
-    document.body.appendChild(heart);
-    setTimeout(() => {
-      heart.remove();
-    }, 7000);
+  function cerrarDetalle() {
+    mostrarSeccion('proyectos');
   }
 
-  setInterval(createFallingHeart, 500);
-
-  // Crear letras cayendo J y B
-  function createFallingLetter(letter) {
-    const span = document.createElement('span');
-    span.classList.add('falling-letter');
-    span.textContent = letter;
-    span.style.left = Math.random() * window.innerWidth + 'px';
-    span.style.animationDuration = (5 + Math.random() * 4) + 's';
-    document.body.appendChild(span);
-    setTimeout(() => {
-      span.remove();
-    }, 9000);
+  function enviarFormulario(event) {
+    event.preventDefault();
+    alert('¡Gracias por contactarnos! Pronto nos comunicaremos contigo.');
+    document.getElementById('nombre').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('mensaje').value = '';
+    return false;
   }
 
-  setInterval(() => createFallingLetter('J'), 3000);
-  setInterval(() => createFallingLetter('B'), 3500);
+  // Bloquear clic derecho y PrintScreen para protección básica
+  document.addEventListener('contextmenu', e => {
+    if (
+      document.getElementById('proyectos').contains(e.target) || 
+      document.getElementById('detalle-proyecto').contains(e.target)
+    ) {
+      e.preventDefault();
+      alert('El clic derecho está deshabilitado para proteger los diseños.');
+    }
+  });
 
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'PrintScreen' || (e.ctrlKey && e.key.toLowerCase() === 'p')) {
+      e.preventDefault();
+      alert('Captura de pantalla está deshabilitada en esta sección.');
+    }
+  });
 </script>
 
 </body>
