@@ -72,6 +72,70 @@
     color: var(--gris-oscuro);
   }
 
+  /* Menú hamburguesa */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    justify-content: space-between;
+  }
+
+  .menu-toggle span {
+    height: 4px;
+    background: var(--amarillo);
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    nav.menu ul {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      background: var(--gris-oscuro);
+      height: calc(100vh - 60px);
+      width: 220px;
+      flex-direction: column;
+      gap: 0;
+      padding-top: 20px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      border-left: 3px solid var(--amarillo);
+      z-index: 999;
+    }
+
+    nav.menu ul.open {
+      transform: translateX(0);
+    }
+
+    nav.menu ul li {
+      margin: 0;
+    }
+
+    nav.menu ul li a {
+      padding: 15px 20px;
+      display: block;
+      border-bottom: 1px solid var(--amarillo);
+      font-size: 1.1rem;
+    }
+
+    .menu-toggle {
+      display: flex;
+    }
+
+    .menu-toggle.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+  }
+
   main {
     padding: 120px 30px 50px;
     max-width: 1000px;
@@ -362,7 +426,12 @@
 <header>
   <nav class="menu">
     <div class="logo">GS Arquitectura</div>
-    <ul>
+    <div class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul id="menu-list">
       <li><a class="active" onclick="mostrarSeccion('inicio')">Inicio</a></li>
       <li><a onclick="mostrarSeccion('quienes')">Quiénes Somos</a></li>
       <li><a onclick="mostrarSeccion('proyectos')">Proyectos</a></li>
@@ -443,7 +512,7 @@
 
   <!-- Detalle proyecto -->
   <section id="detalle-proyecto">
-    <button onclick="cerrarDetalle()">Volver a Proyectos</button>
+    <button onclick="cerrarDetalle()" style="margin-bottom:20px; cursor:pointer; background: var(--amarillo); color: var(--gris-oscuro); border:none; padding:10px 20px; border-radius:6px; font-weight:700; transition: background-color 0.3s ease;">Volver a Proyectos</button>
     <h1 id="titulo-proyecto"></h1>
     <img id="imagen-proyecto" src="" alt="" />
     <p id="descripcion-proyecto"></p>
@@ -514,6 +583,25 @@
     document.getElementById('mensaje').value = '';
     return false;
   }
+
+  // Toggle menú hamburguesa en móvil
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuList = document.getElementById('menu-list');
+
+  menuToggle.addEventListener('click', () => {
+    menuList.classList.toggle('open');
+    menuToggle.classList.toggle('open');
+  });
+
+  // Cerrar menú al seleccionar una opción (en móvil)
+  document.querySelectorAll('#menu-list a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (menuList.classList.contains('open')) {
+        menuList.classList.remove('open');
+        menuToggle.classList.remove('open');
+      }
+    });
+  });
 
   // Bloquear clic derecho y PrintScreen para protección básica
   document.addEventListener('contextmenu', e => {
