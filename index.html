@@ -39,23 +39,14 @@
     box-shadow: 0 3px 6px rgba(0,0,0,0.3);
     transition: background-color 0.4s ease, box-shadow 0.4s ease;
   }
-  /* Header transparente al hacer scroll */
-  header.transparent {
-    background-color: rgba(34, 34, 34, 0.2); /* Negro con 20% opacidad */
-    box-shadow: none;
-  }
   nav.menu {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  nav.menu .logo {
-    font-size: 2rem;
-    font-weight: 900;
-    letter-spacing: 3px;
-    color: var(--amarillo);
-    user-select: none;
-    cursor: default;
+  nav.menu .logo img {
+    height: 50px;
+    object-fit: contain;
   }
   nav.menu ul {
     list-style: none;
@@ -77,7 +68,6 @@
     color: var(--gris-oscuro);
   }
 
-  /* Menú hamburguesa */
   .menu-toggle {
     display: none;
     flex-direction: column;
@@ -146,6 +136,7 @@
     max-width: 1000px;
     margin: 0 auto;
   }
+
   section {
     display: none;
     opacity: 0;
@@ -193,6 +184,19 @@
     margin-right: auto;
   }
 
+  /* Quiénes Somos */
+  #quienes .logo {
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+  }
+
+  /* Reducción del tamaño del logo en la sección "Quiénes Somos" */
+  #quienes .logo img {
+    width: 40px;  /* Tamaño reducido */
+    height: auto;
+  }
+
   /* Proyectos */
   #proyectos h2 {
     text-align: center;
@@ -201,12 +205,14 @@
     font-weight: 800;
     letter-spacing: 2px;
   }
+
   .cards-container {
     display: flex;
     flex-wrap: wrap;
     gap: 32px;
     justify-content: center;
   }
+
   .card {
     position: relative;
     width: 320px;
@@ -217,10 +223,12 @@
     overflow: hidden;
     transition: transform 0.35s cubic-bezier(.25,.8,.25,1), box-shadow 0.35s ease;
   }
+
   .card:hover {
     transform: translateY(-12px) scale(1.02);
     box-shadow: 0 20px 35px rgba(0,0,0,0.25);
   }
+
   .card img {
     width: 100%;
     height: 210px;
@@ -230,11 +238,12 @@
     border-bottom: 4px solid var(--amarillo);
     transition: filter 0.3s ease;
   }
+
   .card:hover img {
     filter: brightness(0.85);
   }
-  /* Marca de agua */
-  .watermark {
+
+  .card .watermark {
     pointer-events: none;
     position: absolute;
     top: 14px;
@@ -246,20 +255,6 @@
     user-select: none;
     letter-spacing: 1px;
   }
-  .card-content {
-    padding: 20px 22px;
-  }
-  .card-content h3 {
-    margin-bottom: 10px;
-    color: var(--gris-oscuro);
-    font-weight: 800;
-    letter-spacing: 1px;
-  }
-  .card-content p {
-    font-size: 1rem;
-    color: var(--gris-medio);
-    line-height: 1.5;
-  }
 
   /* Detalle proyecto */
   #detalle-proyecto {
@@ -267,6 +262,7 @@
     margin: 0 auto;
     text-align: center;
   }
+
   #detalle-proyecto img {
     width: 100%;
     border-radius: 12px;
@@ -275,111 +271,16 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     transition: transform 0.3s ease;
   }
+
   #detalle-proyecto img:hover {
     transform: scale(1.03);
   }
+
   #detalle-proyecto h1 {
     margin-bottom: 20px;
     color: var(--gris-oscuro);
     font-weight: 900;
     letter-spacing: 1.5px;
-  }
-  #detalle-proyecto p {
-    font-size: 1.1rem;
-    color: var(--gris-medio);
-    line-height: 1.6;
-    max-width: 700px;
-    margin: 0 auto 40px;
-  }
-  #detalle-proyecto button {
-    background-color: var(--amarillo);
-    color: var(--gris-oscuro);
-    border: none;
-    padding: 14px 28px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 5px 12px rgba(242,201,76,0.6);
-  }
-  #detalle-proyecto button:hover {
-    background-color: #d1aa26;
-    box-shadow: 0 7px 18px rgba(209,170,38,0.8);
-  }
-
-  /* Servicios */
-  #servicios h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: var(--gris-oscuro);
-    font-weight: 800;
-    letter-spacing: 2px;
-  }
-  #servicios ul {
-    max-width: 600px;
-    margin: 0 auto;
-    list-style: none;
-    padding-left: 0;
-  }
-  #servicios ul li {
-    background: var(--amarillo);
-    color: var(--gris-oscuro);
-    padding: 16px;
-    margin-bottom: 18px;
-    border-radius: 10px;
-    font-weight: 800;
-    font-size: 1.05rem;
-    box-shadow: 0 4px 10px rgba(242,201,76,0.5);
-    transition: background-color 0.3s ease;
-  }
-  #servicios ul li:hover {
-    background: #d1aa26;
-    box-shadow: 0 6px 14px rgba(209,170,38,0.8);
-  }
-
-  /* Contacto */
-  #contacto h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    color: var(--gris-oscuro);
-    font-weight: 800;
-    letter-spacing: 2px;
-  }
-  #contacto form {
-    max-width: 520px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-  #contacto input, #contacto textarea {
-    padding: 14px 18px;
-    border: 2px solid var(--gris-medio);
-    border-radius: 8px;
-    font-size: 1.05rem;
-    transition: border-color 0.3s ease;
-  }
-  #contacto input:focus, #contacto textarea:focus {
-    outline: none;
-    border-color: var(--amarillo);
-    box-shadow: 0 0 10px rgba(242,201,76,0.6);
-  }
-  #contacto button {
-    padding: 14px 28px;
-    background: var(--amarillo);
-    border: none;
-    border-radius: 8px;
-    color: var(--gris-oscuro);
-    font-weight: 900;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 6px 15px rgba(242,201,76,0.7);
-  }
-  #contacto button:hover {
-    background: #d1aa26;
-    box-shadow: 0 8px 22px rgba(209,170,38,0.9);
   }
 
   footer {
@@ -394,43 +295,20 @@
     box-shadow: inset 0 1px 3px rgba(255,255,255,0.15);
   }
 
-  /* Aviso legal */
-  #legal {
-    margin-top: 30px;
-    font-size: 0.8rem;
-    color: var(--gris-medio);
-    text-align: center;
+  footer .logo img {
+    width: 50px;
+    height: auto;
   }
 
-  /* Animaciones */
-
-  /* Fade-in para secciones */
-  section.active {
-    animation: fadeInUp 0.6s ease forwards;
-  }
-
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Transición suave para links menú */
-  nav.menu ul li a {
-    transition: background-color 0.4s ease, color 0.4s ease;
-  }
 </style>
 </head>
 <body>
 
 <header>
   <nav class="menu">
-    <div class="logo">GS Arquitectura</div>
+    <div class="logo">
+      <img src="https://i.imgur.com/ZQblmKJ.png" alt="GS Arquitectura Logo">
+    </div>
     <div class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" role="button" tabindex="0">
       <span></span>
       <span></span>
@@ -461,6 +339,9 @@
 
   <!-- Quiénes Somos -->
   <section id="quienes">
+    <div class="logo">
+      <img src="https://i.imgur.com/ZQblmKJ.png" alt="Logo GS Arquitectura">
+    </div>
     <h2>Quiénes Somos</h2>
     <p>GS Arquitectura fue fundada por los hermanos Gabriela y Santiago López, dos arquitectos apasionados por el diseño eficiente y la integración con el entorno.</p>
     <ul>
@@ -548,6 +429,9 @@
 </main>
 
 <footer>
+  <div class="logo">
+    <img src="https://i.imgur.com/ZQblmKJ.png" alt="GS Arquitectura Logo">
+  </div>
   <p>&copy; 2025 GS Arquitectura - Todos los derechos reservados.</p>
 </footer>
 
@@ -606,24 +490,6 @@
         menuToggle.classList.remove('open');
       }
     });
-  });
-
-  // Bloquear clic derecho y PrintScreen para protección básica
-  document.addEventListener('contextmenu', e => {
-    if (
-      document.getElementById('proyectos').contains(e.target) || 
-      document.getElementById('detalle-proyecto').contains(e.target)
-    ) {
-      e.preventDefault();
-      alert('El clic derecho está deshabilitado para proteger los diseños.');
-    }
-  });
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'PrintScreen' || (e.ctrlKey && e.key.toLowerCase() === 'p')) {
-      e.preventDefault();
-      alert('Captura de pantalla está deshabilitada en esta sección.');
-    }
   });
 
   // Header transparente al hacer scroll
